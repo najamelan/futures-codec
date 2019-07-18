@@ -124,8 +124,8 @@ where
         Poll::Ready(Ok(()))
     }
     fn poll_close(mut self: Pin<&mut Self>, cx: &mut Context) -> Poll<Result<(), Self::Error>> {
-        let this = &mut *self;
-        ready!(Pin::new(&mut this.inner).poll_flush(cx).map_err(Into::into))?;
+        let mut this = &mut *self;
+        ready!(Pin::new(&mut this).poll_flush(cx))?;
         Pin::new(&mut this.inner).poll_close(cx).map_err(Into::into)
     }
 }
